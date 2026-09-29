@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Vira a Noite — descubra a noite em qualquer cidade. MVP fumaça para validar interesse.">
+  <title>Vira a Noite — Descubra a noite em qualquer cidade</title>
+  <style>
+    :root{
+      --bg-100:#0A0C1F;--bg-200:#171B3C;--bg-300:#1F244C;--line:#2C3268;
+      --ink:#F4F2FF;--ink-dim:#A6A8D4;--ink-faint:#6E71A8;
+      --brand-pink:#FF4D82;--brand-amber:#FFC246;--brand-violet:#9C87FF;--brand-teal:#35D6B4;
+      --font-display:"Arial Narrow","Roboto Condensed",Impact,sans-serif;
+      --font-body:Manrope,Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+      --font-mono:"Space Mono","Cascadia Mono",ui-monospace,monospace;
+      --radius-sm:8px;--radius-md:14px;--radius-pill:999px;--max:1120px;
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg-100);color:var(--ink);font-family:var(--font-body);line-height:1.5}
+    button,input,textarea{font:inherit}a{color:inherit;text-decoration:none}
+    .container{width:min(calc(100% - 32px),var(--max));margin:auto}
+    .mono,.eyebrow,.badge,.counter{font-family:var(--font-mono)}
+    .mono{font-size:13px;color:var(--ink-faint)}
+    .eyebrow,.badge,.counter{font-size:11px;line-height:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    header{position:sticky;top:0;z-index:20;background:rgba(10,12,31,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    .nav{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{font-family:var(--font-display);font-size:27px;letter-spacing:.02em}.brand span{color:var(--brand-pink)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid transparent;border-radius:var(--radius-pill);padding:13px 22px;font-size:15px;font-weight:800;cursor:pointer;transition:.15s}
+    .btn:active{transform:translateY(1px)}.btn-primary{background:var(--brand-pink);color:#fff}
+    .btn-primary:hover{background:#ff6694}.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+    .btn-ghost:hover{border-color:var(--brand-amber)}
+    .hero{padding:64px 0 74px;overflow:hidden}.hero-grid{display:grid;gap:34px;align-items:center}
+    .marquee{position:relative;border:2px solid var(--brand-amber);border-radius:var(--radius-md);padding:28px 22px 32px;box-shadow:0 30px 60px -30px rgba(255,77,130,.45)}
+    .marquee:before{content:"•  •  •  •  •  •  •  •";position:absolute;top:-13px;left:20px;right:20px;text-align:center;color:var(--brand-amber);letter-spacing:15px;background:var(--bg-100);font-size:12px}
+    .eyebrow{display:inline-flex;color:var(--brand-amber);margin-bottom:16px}
+    h1,h2{font-family:var(--font-display);font-weight:400;text-transform:uppercase;letter-spacing:.01em;margin:0}
+    h1{font-size:clamp(54px,10vw,92px);line-height:.84;max-width:850px}h2{font-size:clamp(38px,6vw,58px);line-height:.9}
+    .hero p{font-size:17px;line-height:26px;color:var(--ink-dim);max-width:680px;margin:22px 0}
+    .actions{display:flex;flex-wrap:wrap;gap:10px}.counter{display:inline-flex;gap:8px;align-items:center;margin-top:20px;padding:9px 13px;border:1px solid var(--line);border-radius:var(--radius-pill);color:var(--ink-dim)}
+    .counter strong{color:var(--brand-teal)}section{padding:64px 0}.section-head{display:grid;gap:10px;margin-bottom:28px}
+    .section-head p{margin:0;color:var(--ink-dim);max-width:700px}.cards{display:grid;grid-template-columns:1fr;gap:16px}
+    .ticket{background:var(--bg-200);border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden;transition:.15s}
+    .ticket:hover{transform:translateY(-3px);border-color:var(--brand-pink);box-shadow:0 12px 24px -16px rgba(4,5,20,.6)}
+    .ticket-top{padding:18px}.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:var(--radius-pill);background:var(--bg-300);color:var(--ink)}
+    .dot{width:7px;height:7px;border-radius:50%}.pink{background:var(--brand-pink)}.amber{background:var(--brand-amber)}.violet{background:var(--brand-violet)}.teal{background:var(--brand-teal)}
+    .ticket h3{font-size:17px;margin:11px 0 4px}.venue{color:var(--ink-dim);font-size:14px;margin:0}.when{margin:8px 0 0;font-family:var(--font-mono);font-size:12px;color:var(--ink-faint)}
+    .stub{position:relative;border-top:1px dashed var(--line);padding:13px 16px;background:var(--bg-300);display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .stub:before,.stub:after{content:"";position:absolute;top:-8px;width:16px;height:16px;border-radius:50%;background:var(--bg-100)}
+    .stub:before{left:-8px}.stub:after{right:-8px}.price{font-family:var(--font-mono);font-size:13px;color:var(--ink-dim)}
+    .small-btn{padding:8px 14px;font-size:13px}.split{display:grid;gap:30px;align-items:start}.steps{display:grid;gap:18px}
+    .step{display:grid;grid-template-columns:48px 1fr;gap:14px;padding:18px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--bg-200)}
+    .step-number{font-family:var(--font-display);font-size:34px;line-height:1;color:var(--brand-pink)}.step h3{margin:0 0 4px}.step p{margin:0;color:var(--ink-dim)}
+    .form-card{background:var(--bg-200);border:1px solid var(--line);border-radius:var(--radius-md);padding:22px;max-width:700px}
+    label{display:block;font-weight:800;font-size:15px;margin-bottom:6px}.field{margin-bottom:16px}
+    input,textarea{width:100%;border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 13px;background:var(--bg-300);color:var(--ink);outline:none}
+    input:focus,textarea:focus{border-color:var(--brand-pink);box-shadow:0 0 0 3px rgba(255,77,130,.12)}
+    textarea{min-height:105px;resize:vertical}.notice{margin-top:14px;padding:13px;border-radius:var(--radius-sm);background:rgba(53,214,180,.10);border:1px solid rgba(53,214,180,.30);color:var(--brand-teal);display:none}
+    .notice.show{display:block}.illustrative{color:var(--ink-faint);font-family:var(--font-mono);font-size:12px}.social{background:var(--bg-200)}
+    .quotes{display:grid;gap:16px}blockquote{margin:0;padding:20px;border:1px solid var(--line);border-radius:var(--radius-md);background:var(--bg-100);color:var(--ink-dim)}
+    blockquote strong{display:block;color:var(--ink);margin-top:14px}footer{padding:28px 0;border-top:1px solid var(--line);color:var(--ink-faint);font-size:13px}
+    .footer-row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    @media(min-width:700px){.hero{padding-top:92px}.cards{grid-template-columns:repeat(3,1fr)}.quotes{grid-template-columns:repeat(3,1fr)}.split{grid-template-columns:1fr 1fr}.form-card{padding:28px}}
+  </style>
+</head>
+<body>
+<header><nav class="container nav"><a class="brand" href="#top" data-track="logo">VIRA A <span>NOITE</span></a><a class="btn btn-primary" href="#lista" data-track="header_cta">Quero ser avisado</a></nav></header>
+<main id="top">
+<section class="hero"><div class="container hero-grid"><div class="marquee">
+<div class="eyebrow">MVP FUMAÇA · AINDA ESTAMOS VALIDANDO</div><h1>Descubra a noite em qualquer cidade.</h1>
+<p>Você acabou de chegar em uma cidade e quer sair, mas não sabe o que está acontecendo hoje. O <strong>Vira a Noite</strong> reúne shows, música ao vivo, teatro e stand-up em um só lugar, com horário, local e preço visíveis.</p>
+<div class="actions"><a class="btn btn-primary" href="#lista" data-track="hero_cta">Quero ser avisado</a><a class="btn btn-ghost" href="#como-funciona" data-track="how_it_works">Ver como funciona</a></div>
+<div class="counter" aria-live="polite"><span class="dot teal"></span><span><strong id="interestCount">127</strong> pessoas demonstraram interesse</span></div>
+</div></div></section>
+<section><div class="container"><div class="section-head"><h2>O problema</h2><p>Hoje, descobrir o que fazer à noite pode significar procurar em vários lugares e ainda ficar sem saber se a informação está atualizada.</p></div>
+<div class="cards">
+<article class="ticket"><div class="ticket-top"><span class="badge"><span class="dot amber"></span>PROBLEMA</span><h3>Informação espalhada</h3><p class="venue">Eventos estão em redes, sites e perfis diferentes.</p><p class="when">DADOS ILUSTRATIVOS</p></div><div class="stub"><span class="price">MUITAS BUSCAS</span><button class="btn btn-primary small-btn" data-track="pain_card_1">Entendi</button></div></article>
+<article class="ticket"><div class="ticket-top"><span class="badge"><span class="dot violet"></span>PROBLEMA</span><h3>Falta de contexto</h3><p class="venue">É difícil comparar horário, local, preço e tipo de programa.</p><p class="when">DADOS ILUSTRATIVOS</p></div><div class="stub"><span class="price">MUITA DÚVIDA</span><button class="btn btn-primary small-btn" data-track="pain_card_2">Entendi</button></div></article>
+<article class="ticket"><div class="ticket-top"><span class="badge"><span class="dot teal"></span>PROBLEMA</span><h3>Decisão demorada</h3><p class="venue">Quando a informação está espalhada, escolher o programa fica mais difícil.</p><p class="when">DADOS ILUSTRATIVOS</p></div><div class="stub"><span class="price">MENOS TEMPO</span><button class="btn btn-primary small-btn" data-track="pain_card_3">Entendi</button></div></article>
+</div></div></section>
+<section id="como-funciona"><div class="container split"><div><div class="section-head"><h2>A solução</h2><p>Uma experiência simples para transformar “o que tem hoje?” em opções claras de programa.</p></div>
+<div class="steps"><article class="step"><div class="step-number">01</div><div><h3>Escolha a cidade</h3><p>Veja opções de eventos relevantes para o lugar onde você está.</p></div></article>
+<article class="step"><div class="step-number">02</div><div><h3>Compare o que importa</h3><p>Tipo, local, data, horário e faixa de preço ficam visíveis.</p></div></article>
+<article class="step"><div class="step-number">03</div><div><h3>Decida e vá</h3><p>A ação principal é direta: encontrar uma opção e demonstrar interesse.</p></div></article></div></div>
+<div><div class="ticket"><div class="ticket-top"><span class="badge"><span class="dot pink"></span>MÚSICA AO VIVO</span><h3>Trio de MPB no bar</h3><p class="venue">Bar do Beco · Fortaleza</p><p class="when">SEXTA, 26 DE SETEMBRO · 20H</p></div><div class="stub"><span class="price">ENTRADA FRANCA</span><button class="btn btn-primary small-btn" data-track="event_cta">Quero ir</button></div></div><p class="illustrative">Exemplo ilustrativo — este evento não representa disponibilidade real.</p></div></div></section>
+<!-- Depoimentos deliberadamente fictícios para testar a estrutura do MVP. -->
+<section class="social"><div class="container"><div class="section-head"><h2>O que queremos descobrir</h2><p class="illustrative">Depoimentos abaixo são ilustrativos e não representam clientes reais.</p></div>
+<div class="quotes"><blockquote>“Eu gostaria de encontrar opções sem precisar procurar em vários perfis diferentes.”<strong>Pessoa ilustrativa 01</strong></blockquote><blockquote>“Se eu conseguir ver preço e horário de uma vez, eu testaria.”<strong>Pessoa ilustrativa 02</strong></blockquote><blockquote>“Acabei de chegar na cidade e não sei onde procurar eventos.”<strong>Pessoa ilustrativa 03</strong></blockquote></div></div></section>
+<section id="lista"><div class="container split"><div><div class="section-head"><h2>Quer ser avisado?</h2><p>Este formulário é o teste de demanda. O produto ainda não está disponível; queremos medir se existe interesse antes de construir a solução.</p></div><p class="illustrative">Seu envio será salvo localmente neste MVP para demonstração. Em produção, os dados devem ir para um serviço de leads com consentimento e política de privacidade.</p></div>
+<div class="form-card"><form id="leadForm"><div class="field"><label for="name">Nome</label><input id="name" name="name" required autocomplete="name" placeholder="Seu nome"></div><div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" required autocomplete="email" placeholder="voce@email.com"></div><div class="field"><label for="difficulty">O que você mais procura quando chega a uma cidade? <span class="illustrative">(opcional)</span></label><textarea id="difficulty" name="difficulty" placeholder="Ex.: música ao vivo, teatro, stand-up..."></textarea></div><button class="btn btn-primary" style="width:100%" type="submit" data-track="lead_submit">Quero ser avisado</button><div class="notice" id="success" role="status">Obrigado! Você está na lista de espera. Este MVP registrou seu interesse.</div></form></div></div></section>
+</main>
+<footer><div class="container footer-row"><span>Vira a Noite · MVP Fumaça</span><span class="mono">teste de validação · dados ilustrativos</span></div></footer>
+<script>
+const KEY_LEADS="viraNoiteLeads",KEY_INTEREST="viraNoiteInterest",KEY_EVENTS="viraNoiteEvents";
+let interest=Number(localStorage.getItem(KEY_INTEREST)||127);const countEl=document.getElementById("interestCount");
+function renderCount(){countEl.textContent=interest.toLocaleString("pt-BR")}renderCount();
+function track(eventName,extra={}){const events=JSON.parse(localStorage.getItem(KEY_EVENTS)||"[]");events.push({event:eventName,page:location.pathname,at:new Date().toISOString(),...extra});localStorage.setItem(KEY_EVENTS,JSON.stringify(events));console.log("[MVP analytics]",eventName,extra)}
+document.querySelectorAll("[data-track]").forEach(el=>el.addEventListener("click",()=>track(el.dataset.track)));
+document.getElementById("leadForm").addEventListener("submit",e=>{e.preventDefault();const lead={name:document.getElementById("name").value.trim(),email:document.getElementById("email").value.trim(),difficulty:document.getElementById("difficulty").value.trim(),createdAt:new Date().toISOString()};const leads=JSON.parse(localStorage.getItem(KEY_LEADS)||"[]");leads.push(lead);localStorage.setItem(KEY_LEADS,JSON.stringify(leads));interest++;localStorage.setItem(KEY_INTEREST,String(interest));renderCount();track("lead_captured",{hasOptionalAnswer:Boolean(lead.difficulty)});/* Integração real: API, banco, e-mail marketing, CRM, webhook/n8n, Sheets ou Airtable. */document.getElementById("success").classList.add("show");e.target.reset()});
+</script>
+</body>
+</html>
